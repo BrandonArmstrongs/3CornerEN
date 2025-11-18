@@ -1,9 +1,10 @@
 // ------------------------ DOWNLOAD ------------------------
 document.getElementById('downloadBtn').addEventListener('click', () => {
   const output = document.getElementById('outputString').value;
+  const key = document.getElementById('key').value.trim();
   const filenameInput = document.getElementById('filename').value.trim() || 'file';
   const filename = filenameInput + '.3CEN';
-  const blob = new Blob([output], {type: 'text/plain'});
+  const blob = new Blob([output + '\n' + key], {type: 'text/plain'});
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
   link.download = filename;
@@ -11,13 +12,16 @@ document.getElementById('downloadBtn').addEventListener('click', () => {
   URL.revokeObjectURL(link.href);
 });
 
-// ------------------------ IMPORT ------------------------
+// ------------------------ IMPORT WITH KEY ------------------------
 document.getElementById('importFile').addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
   reader.onload = function(ev) {
-    document.getElementById('inputString').value = ev.target.result;
+    const content = ev.target.result.split(/\r?\n/);
+    // Assume first line = input string, second line = key
+    document.getElementById('inputString').value = content[0] || '';
+    document.getElementById('key').value = content[1] || '';
   };
   reader.readAsText(file);
 });
