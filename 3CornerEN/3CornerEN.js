@@ -1,3 +1,27 @@
+// ------------------------ DOWNLOAD ------------------------
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  const output = document.getElementById('outputString').value;
+  const filenameInput = document.getElementById('filename').value.trim() || 'file';
+  const filename = filenameInput + '.3CEN';
+  const blob = new Blob([output], {type: 'text/plain'});
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(link.href);
+});
+
+// ------------------------ IMPORT ------------------------
+document.getElementById('importFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    document.getElementById('inputString').value = ev.target.result;
+  };
+  reader.readAsText(file);
+});
+
 // ------------------------ HELPERS ------------------------
 function stringToHex(str) {
   let hex = '';
