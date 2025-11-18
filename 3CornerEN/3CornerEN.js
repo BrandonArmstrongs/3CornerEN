@@ -174,24 +174,3 @@ document.getElementById('decodeBtn').addEventListener('click', () => handleEncod
 document.getElementById('generateKeyBtn').addEventListener('click', () => {
   document.getElementById('key').value = generateRandomKey();
 });
-
-// ------------------------ DOWNLOAD ------------------------
-document.getElementById('downloadBtn').addEventListener('click', () => {
-  const output = document.getElementById('outputString').value;
-  const filename = document.getElementById('filename').value.trim();
-  if (!output) {
-    alert('Nothing to download! Encode something first.');
-    return;
-  }
-  if (!filename) {
-    alert('Please enter a filename.');
-    return;
-  }
-  const blob = new Blob([output], { type: 'text/plain' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = filename + '.3CEN';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-});
