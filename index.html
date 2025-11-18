@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>String Encoder/Decoder with Key Generator</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 2em; background: #f0f0f0; }
+  textarea, input { width: 100%; padding: 0.5em; margin-bottom: 1em; font-size: 1em; }
+  button { padding: 0.5em 1em; font-size: 1em; margin-right: 0.5em; }
+  label { font-weight: bold; margin-top: 1em; display: block; }
+</style>
+</head>
+<body>
+
+<h1>String Encoder/Decoder</h1>
+
+<label for="inputString">Input String:</label>
+<textarea id="inputString" rows="4"></textarea>
+
+<label for="key">Key (format: 3-digit permutation + 3 two-digit numbers, e.g., 312456778):</label>
+<input type="text" id="key" placeholder="Enter key">
+<button id="generateKeyBtn">Generate Key</button>
+
+<button id="encodeBtn">Encode</button>
+<button id="decodeBtn">Decode</button>
+
+<label for="outputString">Output:</label>
+<textarea id="outputString" rows="4" readonly></textarea>
+<script src="3CornerEn/3CornerEN.js"></script>
+</body>
+</html>
