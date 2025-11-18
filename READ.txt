@@ -63,4 +63,17 @@
   /   ` |  /   /   `      |/   \ |' `|' `. .'   `  (     .'   ` |,---. .'   `  (      (                                                                           
  |    | |-<   |    |      |    ` |   |   | |    |  `--.  |      |'   ` |----'  `--.   `--.                                                                        
  `.__/| /  \_ `.__/|      `___,' /   '   /  `---| \___.'  `._.' /    | `.___, \___.' \___.'                                                                       
-                                            \___/                                                                                                                 
+         ORRRRR Copyright (c) 2025 Brandon Armstrong
+aka bmgschess
+
+You’re free to use, copy, modify, and share this software for personal or non-commercial purposes, as long as you:
+
+Give credit to the original creator: Brandon Armstrong (aka bmgschess)
+
+Keep this license file included
+
+Get explicit permission from the author for any commercial use
+
+This software is provided “as-is,” without any warranty. The author is not responsible for any issues, damages, or other problems that may occur from using it.
+
+Thank you for respecting these simple rules!                                   \___/                                                                                                                 
