@@ -50,11 +50,19 @@ function modInverse256(a) {
   return x;
 }
 
+// ------------------------ KEY VALIDATION ------------------------
+function validateKey(key) {
+  if (!/^\d{9}$/.test(key)) return false;
+  const firstThree = key.slice(0,3).split('').map(Number).sort().join('');
+  if (firstThree !== '123') return false;
+  const nums = [key.slice(3,5), key.slice(5,7), key.slice(7,9)].map(Number);
+  return nums.every(n => n >= 10 && n <= 80);
+}
+
 // ------------------------ ENCODER ------------------------
 function encodeStringWithKey(str, key) {
   if (!str) return '';
-  const digits = key.replace(/\D/g,'').split('').map(d => parseInt(d));
-  if (digits.length < 9) return str;
+  const digits = key.split('').map(d => parseInt(d));
 
   str = 'e' + str;
   let chars = Array.from(str);
@@ -88,8 +96,7 @@ function encodeStringWithKey(str, key) {
 // ------------------------ DECODER ------------------------
 function decodeStringWithKey(encodedStr, key) {
   if (!encodedStr) return '';
-  const digits = key.replace(/\D/g,'').split('').map(d => parseInt(d));
-  if (digits.length < 9) return encodedStr;
+  const digits = key.split('').map(d => parseInt(d));
   try {
     let hexStr = base36ToHex(encodedStr);
     let bytes = stringToBytes(hexToString(hexStr));
@@ -140,31 +147,51 @@ function decodeStringWithKey(encodedStr, key) {
 
 // ------------------------ KEY GENERATOR ------------------------
 function generateRandomKey() {
-  // Random permutation of 1,2,3
   const arr = [1,2,3];
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-  // Three random numbers 10-80, each two digits
   const nums = [];
   for (let i = 0; i < 3; i++) nums.push(String(Math.floor(Math.random() * 71 + 10)).padStart(2,'0'));
   return arr.join('') + nums.join('');
 }
 
 // ------------------------ BUTTON HANDLERS ------------------------
-document.getElementById('encodeBtn').addEventListener('click', () => {
+function handleEncodeDecode(action) {
   const input = document.getElementById('inputString').value;
   const key = document.getElementById('key').value;
-  document.getElementById('outputString').value = encodeStringWithKey(input, key);
-});
+  if (!validateKey(key)) {
+    alert('Invalid key! Key must be 9 digits: 3-digit permutation of 1,2,3 followed by 3 numbers 10-80.');
+    return;
+  }
+  const output = action === 'encode' ? encodeStringWithKey(input, key) : decodeStringWithKey(input, key);
+  document.getElementById('outputString').value = output;
+}
 
-document.getElementById('decodeBtn').addEventListener('click', () => {
-  const input = document.getElementById('inputString').value;
-  const key = document.getElementById('key').value;
-  document.getElementById('outputString').value = decodeStringWithKey(input, key);
-});
-
+document.getElementById('encodeBtn').addEventListener('click', () => handleEncodeDecode('encode'));
+document.getElementById('decodeBtn').addEventListener('click', () => handleEncodeDecode('decode'));
 document.getElementById('generateKeyBtn').addEventListener('click', () => {
   document.getElementById('key').value = generateRandomKey();
+});
+
+// ------------------------ DOWNLOAD ------------------------
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  const output = document.getElementById('outputString').value;
+  const filename = document.getElementById('filename').value.trim();
+  if (!output) {
+    alert('Nothing to download! Encode something first.');
+    return;
+  }
+  if (!filename) {
+    alert('Please enter a filename.');
+    return;
+  }
+  const blob = new Blob([output], { type: 'text/plain' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename + '.3CEN';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 });
